@@ -1,27 +1,30 @@
-import React, {useState} from 'react';
-import customers from './memdb.js'
+import React, { useEffect, useState } from 'react';
+import { getAll, post, put, deleteById } from './memdb.js'
 import './App.css';
 
-function log(message){console.log(message);}
+function log(message) { console.log(message); }
 
 export function App(params) {
   let blankCustomer = { "id": -1, "name": "", "email": "", "password": "" };
+  const [customers, setCustomers] = useState([]);
   const [formObject, setFormObject] = useState(blankCustomer);
   let mode = (formObject.id >= 0) ? 'Update' : 'Add';
+  useEffect(() => { getCustomers(); }, []);
 
-  const getCustomers =  function(){
+  const getCustomers = function () {
     log("in getCustomers()");
+    setCustomers(getAll());
   }
 
-  const handleListClick = function(item){
+  const handleListClick = function (item) {
     log("in handleListClick()");
     if (formObject.id === item.id) {
       // If the clicked item is already selected, deselect it
       setFormObject(blankCustomer);
     } else {
-    setFormObject(item);
+      setFormObject(item);
     }
-  }  
+  }
 
   const handleInputChange = function (event) {
     log("in handleInputChange()");
@@ -29,6 +32,7 @@ export function App(params) {
 
   let onCancelClick = function () {
     log("in onCancelClick()");
+    setFormObject(blankCustomer);
   }
 
   let onDeleteClick = function () {
@@ -54,9 +58,9 @@ export function App(params) {
           <tbody>
             {customers.map(
               (item, index) => {
-                return (<tr key={item.id} 
-                className= { (item.id === formObject.id) ? 'selected' : 'not-selected' }
-                onClick={()=>handleListClick(item)} 
+                return (<tr key={item.id}
+                  className={(item.id === formObject.id) ? 'selected' : 'not-selected'}
+                  onClick={() => handleListClick(item)}
                 >
                   <td>{item.name}</td>
                   <td>{item.email}</td>
@@ -66,50 +70,50 @@ export function App(params) {
             )}
           </tbody>
         </table>
-    </div>
-    <div className="boxed">
-      <div>
-        <h4>{mode}</h4>
       </div>
-      <form >
-        <table id="customer-add-update" >
-          <tbody>
-            <tr>
-              <td className={'label'} >Name:</td>
-              <td><input
-                type="text"
-                name="name"
-                value={formObject.name}
-                placeholder="Customer Name"
-                required /></td>
-            </tr>
-            <tr>
-              <td className={'label'} >Email:</td>
-              <td><input
-                type="email"
-                name="email"
-                value={formObject.email}
-                placeholder="name@company.com" /></td>
-            </tr>
-            <tr>
-              <td className={'label'} >Pass:</td>
-              <td><input
-                type="text"
-                name="password"
-                value={formObject.password}
-                placeholder="password" /></td>
-            </tr>
-            <tr className="button-bar">
-              <td colSpan="2">
-                <input type="button" value="Delete" onClick={onDeleteClick} />
-                <input type="button" value="Save" onClick={onSaveClick} />
-                <input type="button" value="Cancel" onClick={onCancelClick} />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </form>
-    </div>
+      <div className="boxed">
+        <div>
+          <h4>{mode}</h4>
+        </div>
+        <form >
+          <table id="customer-add-update" >
+            <tbody>
+              <tr>
+                <td className={'label'} >Name:</td>
+                <td><input
+                  type="text"
+                  name="name"
+                  value={formObject.name}
+                  placeholder="Customer Name"
+                  required /></td>
+              </tr>
+              <tr>
+                <td className={'label'} >Email:</td>
+                <td><input
+                  type="email"
+                  name="email"
+                  value={formObject.email}
+                  placeholder="name@company.com" /></td>
+              </tr>
+              <tr>
+                <td className={'label'} >Pass:</td>
+                <td><input
+                  type="text"
+                  name="password"
+                  value={formObject.password}
+                  placeholder="password" /></td>
+              </tr>
+              <tr className="button-bar">
+                <td colSpan="2">
+                  <input type="button" value="Delete" onClick={onDeleteClick} />
+                  <input type="button" value="Save" onClick={onSaveClick} />
+                  <input type="button" value="Cancel" onClick={onCancelClick} />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
     </div>
   );
 }
