@@ -50,6 +50,17 @@ export function App(params) {
 
   let onSaveClick = function () {
     log("in onSaveClick()");
+    if (mode === 'Add') {
+      if (formObject.name === '' || formObject.email === '' || formObject.password === '') {
+        alert("Please fill in all fields.");
+        return;
+      }
+      post(formObject);
+    }
+    if (mode === 'Update') {
+      put(formObject.id, formObject);
+    }    
+    setFormObject(blankCustomer);
   }
 
   return (
