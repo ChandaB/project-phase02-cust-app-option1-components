@@ -34,7 +34,7 @@ export default function CustomerListAddUpdateForm({ handleInputChange, formObjec
                         <tr>
                             <td className={'label'} >Pass:</td>
                             <td><input
-                                type="text"
+                                type="password"
                                 name="password"
                                 onChange={(e) => { handleInputChange(e) }}
                                 value={formObject.password}
