@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { getAll, post, put, deleteById } from './memdb.js'
 import './App.css';
-import { CustomerList } from './components/CustomerList.js';
+import CustomerList  from './components/CustomerList.js';
+import CustomerListAddUpdateForm from './components/CustomerListAddUpdateForm.js';
 
 function log(message) { console.log(message); }
 
@@ -12,51 +13,10 @@ export function App(params) {
   let mode = (formObject.id >= 0) ? 'Update' : 'Add';
   useEffect(() => { getCustomers(); }, []);
 
-  /*   function CustomerList(params) {
-     return (
-       <div className="boxed" >
-         <h4>Customer List</h4>
-         <table id="customer-list">
-           <thead>
-             <tr>
-               <th>Name</th>
-               <th>Email</th>
-               <th>Pass</th>
-             </tr>
-           </thead>
-           <tbody>
-             {customers.map(
-               (item, index) => {
-                 return (<tr key={item.id}
-                   className={(item.id === formObject.id) ? 'selected' : 'not-selected'}
-                   onClick={() => handleListClick(item)}
-                 >
-                   <td>{item.name}</td>
-                   <td>{item.email}</td>
-                   <td>{item.password}</td>
-                 </tr>);
-               }
-             )}
-           </tbody>
-         </table>
-       </div>
-     )
-   } */
-
   const getCustomers = function () {
     log("in getCustomers()");
     setCustomers(getAll());
   }
-
-  //   useEffect(() => {
-  //   let promise = getCustomers();
-  //   promise.then(
-  //     (text) => {
-  //       let customerArray = JSON.parse(text);
-  //       setCustomers(customerArray);
-  //     }
-  //   )
-  // }, []);
 
   const handleListClick = function (item) {
     log("in handleListClick()");
@@ -105,81 +65,11 @@ export function App(params) {
     setFormObject(blankCustomer);
   }
 
+
   return (
     <div>
-      <CustomerList customers={params.customers} formObject={params.formObject} handleListClick={params.handleListClick} />
-      <div className="boxed" >
-        <h4>Customer List</h4>
-        <table id="customer-list">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Pass</th>
-            </tr>
-          </thead>
-          <tbody>
-            {customers.map(
-              (item, index) => {
-                return (<tr key={item.id}
-                  className={(item.id === formObject.id) ? 'selected' : 'not-selected'}
-                  onClick={() => handleListClick(item)}
-                >
-                  <td>{item.name}</td>
-                  <td>{item.email}</td>
-                  <td>{item.password}</td>
-                </tr>);
-              }
-            )}
-          </tbody>
-        </table>
-      </div>
-      <div className="boxed">
-        <div>
-          <h4>{mode}</h4>
-        </div>
-        <form >
-          <table id="customer-add-update" >
-            <tbody>
-              <tr>
-                <td className={'label'} >Name:</td>
-                <td><input
-                  type="text"
-                  name="name"
-                  onChange={(e) => { handleInputChange(e) }}
-                  value={formObject.name}
-                  placeholder="Customer Name"
-                  required /></td>
-              </tr>
-              <tr>
-                <td className={'label'} >Email:</td>
-                <td><input
-                  type="email"
-                  name="email"
-                  onChange={(e) => { handleInputChange(e) }}
-                  value={formObject.email}
-                  placeholder="name@company.com" /></td>
-              </tr>
-              <tr>
-                <td className={'label'} >Pass:</td>
-                <td><input
-                  type="text"
-                  name="password"
-                  onChange={(e) => { handleInputChange(e) }}
-                  value={formObject.password}
-                  placeholder="password" /></td>
-              </tr>
-              <tr className="button-bar">
-                <td colSpan="2">
-                  <input type="button" value="Delete" onClick={onDeleteClick} />
-                  <input type="button" value="Save" onClick={onSaveClick} />
-                  <input type="button" value="Cancel" onClick={onCancelClick} />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </form>
-      </div>
+      <CustomerList customers={customers} formObject={formObject} handleListClick={handleListClick} />
+      <CustomerListAddUpdateForm handleInputChange={handleInputChange} formObject={formObject} onDeleteClick={onDeleteClick} onSaveClick={onSaveClick} onCancelClick={onCancelClick}  />
     </div>
   );
 }
