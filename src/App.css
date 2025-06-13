@@ -85,3 +85,8 @@ table#customer-add-update tbody tr td.label{
     border: 0px;
 }
 
+#masked-password {
+  -webkit-text-security: disc;
+}
+
+
